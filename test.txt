@@ -2,7 +2,7 @@
 	<node=10>
 		<node=5>
 		</node>
-	/node>
+	</node>
 	<node=200>
 	</node>
 </node>
