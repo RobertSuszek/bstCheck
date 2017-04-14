@@ -1,9 +1,8 @@
 # depslib dependency file v1.0
-1492093053 source:c:\projekty\c\sprawdzeniedrzewa\main.c
+1492165384 source:c:\projekty\c\sprawdzeniedrzewa\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
-	<limits.h>
 
 1492020616 source:g:\projekty\c\sprawdzeniedrzewa\main.c
 	<stdio.h>
