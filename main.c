@@ -40,8 +40,16 @@ int bstMin(struct node *node);
 int bstMax(struct node *node);
 /*checks if given tree is BST*/
 bool isBST(struct node *node);
+/*deletes a single node of tree*/
 int deleteNode(struct node *node);
+/*deletes nodes in tree, which value is 0*/
 void deleteEmptyNodes(struct node *node);
+/*returns path to file given in params, otherwise returns NULL*/
+char *getPathFromParam(int argc, char **argv);
+/*prints information on standard output if given tree is BST or not*/
+void printResult(bool isBST);
+/*prints program's help on standard output*/
+void printHelp();
 /*+-----------------------------+
   |    Function declarations    |
   +-----------------------------+*/
@@ -173,11 +181,41 @@ int deleteNode(struct node *node) {
 }
 void deleteEmptyNodes(struct node *node) {
   if(node) {
-    if ((node->left) && (node->left->value == 0) && (node->left->left == NULL) && (node->left->right == NULL))
+    if ((node->left) && (node->left->value == 0) && (node->left->left == NULL) && (node->left->right == NULL) && (node->right) && (node->right->value != 0))
       deleteNode(node->left);
     deleteEmptyNodes(node->left);
     deleteEmptyNodes(node->right);
   }
+}
+char *getPathFromParam(int argc, char **argv) {
+  int i;
+  if (argc > 1) {
+    for (i = 1; i < argc; i++) {
+      if (!(strcmp(argv[i], "-h"))) {
+        printHelp();
+        return NULL;
+      }
+      if ((!(strcmp(argv[i], "-i"))) && (argc > i))
+        return argv[i+1];
+    }
+    return NULL;
+  } else
+    return NULL;
+}
+void printResult(bool isBST) {
+  if (isBST == true)
+    printf("Drzewo JEST drzewem poszukiwan binarnych.");
+  else
+    printf("Dzrewo NIE JEST drzewem poszukiwan binarnych.");
+}
+void printHelp() {
+  printf("Program SprawdzenieDrzewa sluzy do sprawdzenia, czy dane drzewo jest drzewem poszukiwan binarnych (BST)."
+       "\n"
+       "\nParametry wywolania programu:"
+       "\n -i \"sciezka\""
+       "\n"
+       "\nDrzewo powinno byc w pliku opartym o format XML, do programu dolaczono przyklad poprawnego pliku z drzewem."
+       "\nGdy zajdzie potrzeba, aby wezel posiadal prawego, lecz nie posiadal lewego syna, nalezy w miejsce lewego syna umiescic wezel o wartosci '0'.");
 }
 /*+-----------------------------+
   |   Function implementations  |
@@ -185,8 +223,7 @@ void deleteEmptyNodes(struct node *node) {
 
 /* ---------------------------------------------------------------------------------------*/
 
-int _print_t(struct node *tree, int is_left, int offset, int depth, char s[20][255])
-{
+int _print_t(struct node *tree, int is_left, int offset, int depth, char s[20][255]) {
     char b[20];
     int width = 5;
 
@@ -241,8 +278,7 @@ int _print_t(struct node *tree, int is_left, int offset, int depth, char s[20][2
     return left + width + right;
 }
 
-void print_t(struct node *tree)
-{
+void print_t(struct node *tree) {
     char s[20][255];
     int i = 0;
     for (i = 0; i < 20; i++)
@@ -254,16 +290,17 @@ void print_t(struct node *tree)
         printf("%s\n", s[i]);
 }
 
-int main()
-{
+int main(int argc, char **argv) {
   struct node *root = NULL;
-
-  root = parseFileToTree("test.txt");
-
-  print_t(root);
-  if (isBST(root) == true)
-    printf("YAY!");
-  else
-    printf("notYAY!");
+  char *path = getPathFromParam(argc, argv);
+  if (path) {
+    root = parseFileToTree(path);
+    if (!(root)) {
+      printHelp();
+      return 0;
+    }
+    print_t(root);
+    printResult(isBST(root));
+  }
   return 0;
 }
