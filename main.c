@@ -48,7 +48,7 @@ void deleteEmptyNodes(struct node *node);
 char *getPathFromParam(int argc, char **argv);
 /*prints information on standard output if given tree is BST or not*/
 void printResult(bool isBST);
-/*prints program's help on standard output*/
+/*prints program help on standard output*/
 void printHelp();
 /*+-----------------------------+
   |    Function declarations    |
@@ -76,12 +76,12 @@ int addChild(struct node **root, struct node *node) {
         node->parent = (*root);
         (*root)->left = node;
         return 0;
-        } else if ((*root)->right == NULL) {
-          node->parent = (*root);
-          (*root)->right = node;
-          return 0;
-        } else
-          return 3;
+      } else if ((*root)->right == NULL) {
+        node->parent = (*root);
+        (*root)->right = node;
+        return 0;
+      } else
+        return 3;
     } else
       return 2;
   } else
@@ -125,8 +125,10 @@ struct node *parseFileToTree(char *path) {
       if (isEnd(line) == true) {
         current = current->parent;
       }
-      if ((isStart(line) == false) && (isEnd(line) == false))
+      if ((isStart(line) == false) && (isEnd(line) == false)) {
+        printf("Niepoprawna struktura pliku %s\n", path);
         return NULL;
+      }
     }
     fclose(file);
     root = root->left;
@@ -134,8 +136,10 @@ struct node *parseFileToTree(char *path) {
     deleteNode(root->parent);
     root->parent = NULL;
     return root;
-  } else
-    return NULL;
+  } else {
+      printf("Nie udalo sie otworzyc pliku %s\n", path);
+      return NULL;
+    }
 }
 int bstMin(struct node *node) {
   if (node == NULL)
@@ -181,7 +185,9 @@ int deleteNode(struct node *node) {
 }
 void deleteEmptyNodes(struct node *node) {
   if(node) {
-    if ((node->left) && (node->left->value == 0) && (node->left->left == NULL) && (node->left->right == NULL) && (node->right) && (node->right->value != 0))
+    if ((node->left) && (node->left->value == 0) &&
+        (node->left->left == NULL) && (node->left->right == NULL) &&
+        (node->right) && (node->right->value != 0))
       deleteNode(node->left);
     deleteEmptyNodes(node->left);
     deleteEmptyNodes(node->right);
@@ -296,11 +302,15 @@ int main(int argc, char **argv) {
   if (path) {
     root = parseFileToTree(path);
     if (!(root)) {
+      printf("Wystapil problem z odczytaniem drzewa z pliku %s\n", path);
       printHelp();
       return 0;
     }
-    print_t(root);
     printResult(isBST(root));
+  } else {
+    printf("Wystapil problem z odczytaniem œcie¿ki pliku z parametru\n");
+    printHelp();
+    return 0;
   }
   return 0;
 }
