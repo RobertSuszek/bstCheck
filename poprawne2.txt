@@ -1,0 +1,30 @@
+<node=90>
+	<node=50>
+		<node=20>
+			<node=5>
+			</node>
+			<node=25>
+			</node>
+		</node>
+		<node=75>
+			<node=66>
+			</node>
+			<node=80>
+			</node>
+		</node>
+	</node>
+	<node=150>
+		<node=95>
+			<node=92>
+			</node>
+			<node=111>
+			</node>
+		</node>
+		<node=175>
+			<node=166>
+			</node>
+			<node=200>
+			</node>
+		</node>
+	</node>
+</node>
