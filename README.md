@@ -8,4 +8,4 @@ Example usage: SprawdzenieDrzewa -i myTreeFile.txt
 
 Program prints "To jest BST" if given tree is a BST, or "Nie, to nie jest BST" is it isn't.
 
-Program were developed as a project for one of my classes at SUoT.
+Program was developed as a project for one of my classes at SUoT.
